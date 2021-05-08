@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css?family=Marcellus SC');
+
+/*This section is for the HomePage*/
+.register__form label {
+    color: blue !important;
+}
+
+.homepage__profile{
+    width:75%;
+    padding-top: 75%;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 100px; 
+}
+
+.homepage__profile-text{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-family: Marcellus SC;
+    font-size: 2.5rem;
+    color: #000000;
+
+}
+
+.homepage__profile-image{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:100%;
+    height:100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: solid 3px #e2e2e2;
+    box-shadow: #00000096 2px 2px 14px;
+}
+
+.Homepage_profile-label{
+    z-index: 10;
+    background-image: linear-gradient(to right, cornsilk, #ffffff ) ;
+    position: sticky;
+    padding: 30px;
+    box-shadow: #00000096 2px 2px 13px;
+}
+
+.Homepage_profile-label button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-image: linear-gradient(to right, #ffffff00, #ffffff00);
+    color: #000000;
+}
+
+.Homepage_profile-label img {
+    height: 30px;
+}
+
+/*This section is for register*/
+.register__preview img {
+    margin: auto;
+    max-height:30vh;
+ }
+ 
+ .register__form-icons {
+    height:1em;
+ }
+ 
+ .missing{
+    overflow: hidden;
+    animation: writting 4s ease-in-out infinite;
+ }
+ 
+ button{
+    border: none;
+     padding: 0 20px 0 20px;
+     border-radius: 50px;
+     background-image: linear-gradient(45deg, #5048c5, #0f9bff);
+     color: #ffffff;
+ }
+ 
+ .button__unabled {
+    border: none;
+    padding: 10px 40px 10px 40px;
+    border-radius: 50px;
+    background-image: linear-gradient(45deg, #67726a, #a7bba8);
+    color: #ffffff;
+ }
+ 
+ .button__validation{
+    background-image: linear-gradient(45deg, #21572a, #32ac2d);
+    padding: 10px 40px 10px 40px;
+ }
+ 
+ 
+
+/*Responsive mobile first*/
+/*HomePage*/
+@media only screen and (min-width: 767px) {
+    .homepage__profile{
+        width:23vw;
+        padding-top: 23vw;;
+    }
+}
+
+
+/*KEYFRAMES ANIMATIONS*/
+/*RegisterPage*/
+@keyframes writting {
+    0% {
+        transform: translateX(0px);
+    }
+    25% {
+        transform: translateX(50px);
+    }
+    50% {
+       transform: translateX(0px);
+    }
+    75% {
+    transform: translateX(100px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+ }
+ 
+ @-webkit-keyframes writting {
+    from {
+        transform: translateX(0);
+    }
+    25% {
+       transform: translateX(50px);
+    }
+    50% {
+       transform: translateX(0px);
+    }
+    75% {
+    transform: translateX(100px);
+    }
+    to {
+        transform: translateX(0);
+    }
+ }
+
