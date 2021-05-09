@@ -1,5 +1,28 @@
 @import url('https://fonts.googleapis.com/css?family=Marcellus SC');
 
+/*Let's start by the header component*/
+.masthead {
+    padding: 20px 30px;
+    background-image: linear-gradient(to bottom, #ffffff, #dddddd);
+    box-shadow: #000000 0 0 10px;
+    width:100vw;
+}
+
+.jumbotron {
+    padding-top: unset;
+    background-image: linear-gradient(89deg, #e0e0e0, #ffffff, #949494);
+}
+
+.header__text {
+    color: #000000;
+    font-family: Marcellus SC;
+}
+
+.header__text-logo a{
+    color: #000000;
+    font-family: Marcellus SC;
+}
+
 /*This section is for the HomePage*/
 .register__form label {
     color: blue !important;
@@ -33,25 +56,47 @@
     object-fit: cover;
     border: solid 3px #e2e2e2;
     box-shadow: #00000096 2px 2px 14px;
+    transform: scale(0.8);
+    transition: opacity 1s ease-in-out 0.3s, transform 1s ease-in-out;
 }
 
-.Homepage_profile-label{
+.homepage__profile:hover .homepage__profile-image{
+    transform: scale(1);
+    opacity:0.3;
+    transition: opacity 1s ease-in-out 0.3s, transform 1s ease-in-out;
+}
+
+.homepage__profile:hover .homepage__profile-label{
+    transform: scale(1.1);
+    opacity:1;
+    transition: opacity 1s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.homepage__profile-label{
     z-index: 10;
-    background-image: linear-gradient(to right, cornsilk, #ffffff ) ;
+    background-image: linear-gradient(to right, #bfbfbf, #ffffff ) ;
     position: sticky;
     padding: 30px;
     box-shadow: #00000096 2px 2px 13px;
+    transform: scale(1);
+    opacity:0.8;
+    transition: opacity 1s ease-in-out, transform 0.8s ease-in-out;
 }
 
-.Homepage_profile-label button {
+.homepage__profile-label button {
     position: absolute;
     bottom: 10px;
     right: 10px;
     background-image: linear-gradient(to right, #ffffff00, #ffffff00);
     color: #000000;
+    box-shadow: inset #717171 1px 2px 10px;
 }
 
-.Homepage_profile-label img {
+.homepage__profile-label button:hover {
+    animation: movefast 0.5s ease-in-out infinite;
+}
+
+.homepage__profile-label img {
     height: 30px;
 }
 
@@ -91,6 +136,25 @@
     padding: 10px 40px 10px 40px;
  }
  
+ /*This section is for the page preview*/
+ .preview__text{
+     width:100%;
+     font-size: 1.5rem !important;
+ }
+
+ .preview__img{
+    width:50%;
+ }
+
+ .preview__passport{
+    margin-top: 100px;
+    background-image: linear-gradient(91deg, white,#d2d2d2, white, #d2d2d2, #d2d2d2);
+    padding: 15px;
+    border: solid 4px #080a589e;
+    box-shadow: #000000 0 0 4px;
+    border-top: 1px;
+    border-bottom: 1px;
+ }
  
 
 /*Responsive mobile first*/
@@ -104,6 +168,44 @@
 
 
 /*KEYFRAMES ANIMATIONS*/
+/*HomePage*/
+@keyframes movefast {
+    0% {
+        transform: translateX(0px);
+    }
+    25% {
+        transform: translateX(-10px);
+    }
+    50% {
+       transform: translateX(0px);
+    }
+    75% {
+    transform: translateX(-5px);
+    }
+    100% {
+        transform: translateX(0px);
+    }
+ }
+ 
+ @-webkit-keyframes movefast {
+    from {
+        transform: translateX(0);
+    }
+    25% {
+       transform: translateX(-10px);
+    }
+    50% {
+       transform: translateX(0px);
+    }
+    75% {
+    transform: translateX(-5px);
+    }
+    to {
+        transform: translateX(0);
+    }
+ }
+
+
 /*RegisterPage*/
 @keyframes writting {
     0% {

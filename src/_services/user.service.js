@@ -53,20 +53,6 @@ function logout() {
     localStorage.removeItem('user');
 }
 
-//Get one user
-function getById(id) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`${config.apiUrl}/api/users/${id}`, requestOptions)
-        .then(handleResponse)
-        .catch(function (error) {
-            console.log('GET ' + error.message)
-        })
-}
-
 //Get all the users
 function getAll() {
     const requestOptions = {
@@ -81,26 +67,49 @@ function getAll() {
         })
 }
 
-//Update one user
-function update(user) {
-    const requestOptions = {
-        method: 'PUT',
-        headers: { ...authHeader(), 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
-    };
-
-    return fetch(`${config.apiUrl}/users/${user.id}`, requestOptions).then(handleResponse);;
-}
-
 // prefixed function name with underscore because delete is a reserved word in javascript
 function _delete(id) {
     const requestOptions = {
-        method: 'DELETE',
+        method: 'PUT',
         headers: authHeader()
     };
 
-    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${config.apiUrl}/api/users/deleteUser/${id}`, requestOptions)
+        .then(handleResponse);
 }
+
+//Get one user
+function getById(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/api/users/userGet/${id}`, requestOptions)
+        .then(handleResponse)
+        .catch(function (error) {
+            console.log('GET ' + error.message)
+        })
+}
+
+//Update one user
+function update(user, id) {
+    let authUser = JSON.parse(localStorage.getItem('user'));
+    
+    const requestOptions = {
+        method: 'PUT',
+        headers: { 'Content-Type': "application/json", 'Authorization': 'bearer ' + authUser.token }, 
+        body: JSON.stringify(user) 
+    };
+
+    return fetch(`${config.apiUrl}/api/users/userUpdate/${id}`, requestOptions)
+        .then(handleResponse)
+        .catch(function (error) {
+            console.log('TOKEN ERROR ' + error.message)
+        })
+}
+
+
 
 function handleResponse(response) {
     return response.text().then(text => {

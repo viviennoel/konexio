@@ -9,6 +9,7 @@ import { HomePage } from '../HomePage';
 import { LoginPage } from '../LoginPage';
 import { PreviewPage } from '../PreviewPage';
 import { RegisterPage } from '../RegisterPage';
+import { PassportPage } from '../PassportPage';
 
 class App extends React.Component {
     constructor(props) {
@@ -24,8 +25,8 @@ class App extends React.Component {
         const { alert } = this.props;
         return (
             <div className="jumbotron">
-                <div className="container">
-                    <div className="col-12 col-sm-8 offset-sm-2">
+                <div className="container p-0">
+                    <div>
                         {alert.message &&
                             <div className={`alert ${alert.type}`}>{alert.message}</div>
                         }
@@ -33,6 +34,7 @@ class App extends React.Component {
                             <Switch>
                                 <PrivateRoute exact path="/" component={HomePage} />
                                 <PrivateRoute exact path="/preview" component={PreviewPage} />
+                                <PrivateRoute exact path="/passport" component={PassportPage} />
                                 <Route path="/login" component={LoginPage} />
                                 <Route path="/register" component={RegisterPage} />
                                 <Redirect from="*" to="/" />

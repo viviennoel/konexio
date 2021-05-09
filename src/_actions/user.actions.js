@@ -8,7 +8,9 @@ export const userActions = {
     logout,
     register,
     getAll,
-    delete: _delete
+    delete: _delete,
+    getOne,
+    update
 };
 
 //Login the user
@@ -70,7 +72,9 @@ function getAll() {
 
         userService.getAll()
             .then(
-                users => dispatch(success(users)),
+                users => {
+                    dispatch(success(users))
+                },
                 error => dispatch(failure(error.toString()))
             );
     };
@@ -87,7 +91,10 @@ function _delete(id) {
 
         userService.delete(id)
             .then(
-                user => dispatch(success(id)),
+                user => {
+                    dispatch(success(id))
+
+                },
                 error => dispatch(failure(id, error.toString()))
             );
     };
@@ -95,4 +102,44 @@ function _delete(id) {
     function request(id) { return { type: userConstants.DELETE_REQUEST, id } }
     function success(id) { return { type: userConstants.DELETE_SUCCESS, id } }
     function failure(id, error) { return { type: userConstants.DELETE_FAILURE, id, error } }
+}
+
+//Get one specific user of Konexio
+function getOne(id) {
+    return dispatch => {
+        dispatch(request());
+
+        userService.getById(id)
+            .then(
+                user => dispatch(success(user)),
+                error => dispatch(failure(error.toString()))
+            );
+    };
+
+    function request() { return { type: userConstants.GETONE_REQUEST } }
+    function success(user) { return { type: userConstants.GETONE_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.GETONE_FAILURE, error } }
+}
+
+//Update an user
+function update(user, id) {
+    return dispatch => {
+        dispatch(request());
+
+        userService.update(user, id)
+            .then(
+                user => { 
+                    dispatch(success());
+                    dispatch(alertActions.success('Modificalion successful'));
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
+                }
+            );
+    };
+
+    function request(user) { return { type: userConstants.UPDATE_REQUEST, user } }
+    function success(users) { return { type: userConstants.UPDATE_SUCCESS, users } }
+    function failure(error) { return { type: userConstants.UPDATE_FAILURE, error } }
 }
