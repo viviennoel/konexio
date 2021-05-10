@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from '../../components/Header'
 import { userActions } from '../../redux/actions'
+
 class HomePage extends React.Component {
 
     componentDidMount() {

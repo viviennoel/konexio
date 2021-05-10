@@ -57,8 +57,9 @@ exports.signupUser = (req, res, next) => {
 
 //Login user function
 exports.loginUser = (req, res, next) => {
-    console.log(req.body.user.email)
-    User.findOne({ email: req.body.user.email })
+    console.log('loggin in')
+    console.log(req.body)
+    User.findOne({ email: req.body.user.email }).select('password')
         .then(user => {
             console.log(user)
             if (!user) {
@@ -67,6 +68,8 @@ exports.loginUser = (req, res, next) => {
             bcrypt.compare(req.body.user.password, user.password)
                 .then(valid => {
                     if (!valid) {
+                        console.log(req.body.user.password)
+                        console.log(user.password)
                         return res.status(401).json({ error: 'Mot de passe incorrect !' });
                     }
 
@@ -188,56 +191,93 @@ exports.userGet = (req, res, next) => {
 
 //UPDATE PROFILE
 exports.userUpdate = (req, res, next) => {
+    console.log('req.body')
     console.log(req.body);
+    const token = req.headers.authorization.split(' ')[1];
+    let userId = jwt.verify(token, 'RANDOM_TOKEN_SECRET')
 
-    User.updateOne(
-        { _id: req.params.userId },
-        { ...req.body, _id: req.params.userId }
-    ).then((response) => {
-        res.status(200).json(response)
-    })
-    .catch(error => res.status(400).json({ error }));
-};
-
-
-
-
-
-
-
-
-
-
-
+    console.log('user modification ahead')
+    //We find the user we wish to modify in order to user the database
+    User.findOne({ _id: userId.userId }).select('password')
+        .then(
+            (response) => {
+                console.log(response);
+                if (!response) {
+                    return res.status(405).json({ message: 'user doesnt exist' });
+                } else {
+                    console.log('user modification current')
+                    console.log(req.body)
+                    console.log(response.password)
+                    User.updateOne(
+                        { _id: req.params.userId },
+                        {
+                            ...req.body,
+                            password: response.password,
+                                _id: req.params.userId
+                        }
+                    ).then((response) => {
+                        console.log('user modification done')
+                        console.log(response)
+                        res.status(200).json(response)
+                    })
+                        .catch(error => res.status(400).json({ error }));
+                }
+            })
+        .catch(
+            () => {
+                res.status(500).send(new Error('Database error!'));
+            }
+        )
+}
 
 //UPDATE PROFILE PICTURE
 exports.userUpdatePicture = (req, res, next) => {
-
-    //Make sure the file will not get erased
-    let file = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : req.body.file;
-
-    //build the response for redux
     const token = req.headers.authorization.split(' ')[1];
-        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
-    let response = {
-        userId: decodedToken.userId,
-        token: token,
-        firstname:req.body.firstname,
-        lastname:req.body.lastname,
-        status:req.body.status,
-        picture: file,
-        newsletter: req.body.newsletter,
-        email:req.body.email,
-        password: req.body.password,
-    }
+    let userId = jwt.verify(token, 'RANDOM_TOKEN_SECRET')
+    User.findOne({ _id: userId.userId }).select('password')
+        .then(
+            (response) => {
+                console.log(response);
+                if (!response) {
+                    return res.status(405).json({ message: 'user doesnt exist' });
+                } else {
+                    //Make sure the file will not get erased
+                    let file = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : req.body.file;
 
-    User.updateOne(
-        { _id: req.params.userId },
-        { ...req.body, 
-            picture: file,
-            _id: req.params.userId }
-    ).then(() => {
-        res.status(200).json(response)
-    })
-    .catch(error => res.status(400).json({ error }));
-};
+                    //build the response for redux
+                    const token = req.headers.authorization.split(' ')[1];
+                    const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+                    let toState = {
+                        userId: decodedToken.userId,
+                        token: token,
+                        firstname: req.body.firstname,
+                        lastname: req.body.lastname,
+                        status: req.body.status,
+                        picture: file,
+                        newsletter: req.body.newsletter,
+                        email: req.body.email,
+                        password: "This is not shared",
+                    }
+
+                    User.updateOne(
+                        { _id: req.params.userId },
+                        {
+                            ...req.body,
+                            picture: file,
+                            password: response.password,
+                            _id: req.params.userId
+                        }
+                    ).then(() => {
+                        console.log("This is the response I send")
+                        console.log(toState)
+                        res.status(200).json(toState)
+                    })
+                        .catch(error => res.status(400).json({ error }));
+                }
+            })
+        .catch(
+            () => {
+                res.status(500).send(new Error('Database error!'));
+            }
+        )
+}

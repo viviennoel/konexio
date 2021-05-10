@@ -96,11 +96,12 @@ function getById(id) {
 //Update one user
 function update(user, id) {
     let authUser = JSON.parse(localStorage.getItem('user'));
-    
+    console.log("which user update")
+    console.log(user)
     const requestOptions = {
         method: 'PUT',
-        headers: { 'Content-Type': "multipart/form-data", 'Authorization': 'bearer ' + authUser.token }, 
-        body: {user} 
+        headers: { 'Content-Type': "application/json", 'Authorization': 'bearer ' + authUser.token }, 
+        body: JSON.stringify(user)
     };
 
     return fetch(`${config.apiUrl}/api/users/userUpdate/${id}`, requestOptions)

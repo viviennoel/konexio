@@ -9,6 +9,11 @@
     width:100vw;
 }
 
+.header__logo{
+  font-family: Lobster;
+  font-size: 4rem;
+}
+
 .jumbotron {
     padding-top: unset;
     background-image: linear-gradient(89deg, #e0e0e0, #ffffff, #949494);
@@ -34,6 +39,21 @@ h1{
 .header__text-logo a{
     color: #000000;
     font-family: Marcellus SC;
+}
+
+/*Dropdown*/
+
+#dropdown_menu{
+    position: absolute;
+    padding: 20px;
+    background-color: #e2e2e2;
+    right: 20px;
+    z-index: 1;
+    box-shadow: #00000078 0px 2px 2px;
+}
+
+#dropdown_menu button{
+  
 }
 
 /*Footer*/
@@ -127,6 +147,27 @@ h1{
 
 .homepage__profile-label img {
     height: 30px;
+}
+
+/*FlyingKonexio*/
+
+.astronaut_div{
+  width: 100%;
+  height: 100%;
+}
+
+.astronaut_div img{
+  max-width:90vw;
+  margin: auto;
+  height: auto;
+  width: 100%;
+}
+
+#Bg_Astronaut{
+  position: relative;
+  margin-top: 5vh;
+  max-width:150px;
+  animation: Astronaut_fly 10s ease-in-out infinite;
 }
 
 /*This section is for register*/
@@ -591,3 +632,80 @@ h1{
         opacity: 0;
     }
  }
+
+ /*FlyingKonexio*/
+
+ @keyframes Astronaut_fly {
+  0% {
+    transform: translateY(0);
+
+  }
+  12.5%{
+    transform: translateY(-10px);
+  }
+  50%{
+    transform: translateY(0px);
+  }
+  77.5%{
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@-webkit-keyframes Astronaut_fly {
+  from {
+    transform: translateY(0);
+
+  }
+  12.5%{
+    transform: translateY(-10px);
+  }
+  50%{
+    transform: translateY(0px);
+  }
+  77.5%{
+    transform: translateY(-20px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes Astronaut_fly_shadow {
+  0% {
+    transform: scaleX(1);
+  }
+  12.5%{
+    transform: scaleX(0.8);
+  }
+  50%{
+    transform: scaleX(1.8);
+  }
+  77.5%{
+    transform: scaleX(0.5);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@-webkit-keyframes Astronaut_fly_shadow {
+  from {
+    transform: scaleX(1);
+
+  }
+  12.5%{
+    transform: scaleX(0.8);
+  }
+  50%{
+    transform: scaleX(1.8);
+  }
+  77.5%{
+    transform: scaleX(0.5);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}

@@ -42,15 +42,16 @@ class PreviewPage extends React.Component {
             firstname: firstname,
             lastname: lastname,
             email: displayed.items.email,
-            password: displayed.items.password,
+            password: "The password is not shared",
             status: displayed.items.status,
             picture: displayed.items.picture,
             newsletter: displayed.items.newsletter,
         }
 
         //fetch the data to the backend
-        console.log('this is the ')
+        console.log('this is the newuser')
         console.log(id)
+        console.log(newuser)
         this.props.updateOne(newuser, id);
     }
 
