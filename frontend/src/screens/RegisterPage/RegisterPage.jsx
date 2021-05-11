@@ -64,8 +64,7 @@ class RegisterPage extends React.Component {
         formData.append("cgu", cgu);
 
         //fetch the data to the backend after field check
-        if (submitted &&
-            firstname &&
+        if (firstname &&
             lastname &&
             passwordConfirmation === password &&
             (password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/)) &&
@@ -172,7 +171,7 @@ class RegisterPage extends React.Component {
                                 ? <img className="register__form-icons missing" src="https://res.cloudinary.com/viviennoel07/image/upload/v1620403589/writte_oofiko.png"></img>
                                 : <img className="register__form-icons" src="https://res.cloudinary.com/viviennoel07/image/upload/v1620401634/valid_jvjkmg.png"></img>}
                             <input type="file" className="w-100" onChange={this.handleChangePicture} />
-                            {submitted && (file) &&
+                            {submitted && (!file) &&
                                 <div className="help-block">Une photo de profile est obligatoire!</div>
                             }
                         </label>
@@ -195,8 +194,8 @@ class RegisterPage extends React.Component {
                                 ? <img className="register__form-icons missing" src="https://res.cloudinary.com/viviennoel07/image/upload/v1620403589/writte_oofiko.png"></img>
                                 : <img className="register__form-icons" src="https://res.cloudinary.com/viviennoel07/image/upload/v1620401634/valid_jvjkmg.png"></img>}
                             <input type="checkbox" name="cgu" className="w-100" defaultChecked={cgu} onChange={this.handleChange} />
-                            {submitted && (cgu) &&
-                                <div className="help-block">Veuillez accepter les CGU</div>
+                            {submitted && !cgu &&
+                                <div className="help-block">L'acceptation des CGU est obligatoire!</div>
                             }
                         </label>
 
