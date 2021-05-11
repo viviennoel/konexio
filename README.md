@@ -12,8 +12,8 @@ node server
 
 ### Lancement du frontend
 ###### Dans le dossier frontend, lancez le frontend avec les commandes:
-npm install
-npm start
+- npm install
+- npm start
 
 ## FRONTEND - REACT
 
