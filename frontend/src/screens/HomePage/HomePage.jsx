@@ -48,7 +48,9 @@ class HomePage extends React.Component {
                                         {
                                             user.deleting ? <em> - Deleting...</em>
                                                 : user.deleteError ? <span className="text-danger"> - ERROR: {user.deleteError}</span>
-                                                    : <span> - <button id="deleteUser" onClick={this.handleDeleteUser(user._id)}><img src="https://res.cloudinary.com/viviennoel07/image/upload/v1620499973/trash_gc9se1.png" title="delete" alt="delete"></img> Supprimer</button></span>
+                                                    : this.props.user.status === "teacher" ?
+                                                    <span> - <button id="deleteUser" onClick={this.handleDeleteUser(user._id)}><img src="https://res.cloudinary.com/viviennoel07/image/upload/v1620499973/trash_gc9se1.png" title="delete" alt="delete"></img> Supprimer</button></span>
+                                                        : <span></span>
                                         }
                                     </div>
                                 </div>

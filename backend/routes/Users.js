@@ -23,7 +23,7 @@ router.put('/deleteUser/:ProductId', auth, usersCtrl.deleteUser);
 router.put('/userUpdate/:userId', auth, usersCtrl.userUpdate)
 
 //UPDATE PROFILE PICTURE
-router.put('/userUpdatePicture/:userId',multer, usersCtrl.userUpdatePicture)
+router.put('/userUpdatePicture/:userId', auth, multer, usersCtrl.userUpdatePicture)
 
 
 module.exports = router;
