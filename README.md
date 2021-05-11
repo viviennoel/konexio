@@ -1,7 +1,7 @@
 # TEST TECHNIQUE KONEXIO
 
 Pour lancer l'application web localement, importez ce repository à l'aide de la commande: 
-git clone https://github.com/viviennoel/konexio.git
+- git clone https://github.com/viviennoel/konexio.git
 Vous pourrez ensuite accéder au dossier frontend et au dossier backend.
 
 ## LANCEMENT
