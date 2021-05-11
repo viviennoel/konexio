@@ -6,11 +6,11 @@ Vous pourrez ensuite accéder au dossier frontend et au dossier backend.
 
 ## LANCEMENT
 
-### Lancement du frontend
+### Lancement du backend
 ###### Dans le dossier backend, lancez le backend avec les commandes:
 node server
 
-### Lancement du backend
+### Lancement du frontend
 ###### Dans le dossier frontend, lancez le frontend avec les commandes:
 npm install
 npm start
