@@ -4,7 +4,7 @@
 ###### Dans le dossier backend, lancez le backend avec les commandes:
 node server
 
-### Les fonctionalités du Backend
+### Les fonctionnalités du Backend
 
 Le backend a été développé en utilisant Node.JS/Express, MongoDB et Mongoose. Les routes mises en place permettent de :
 
