@@ -13,7 +13,7 @@ Pour mettre en place ce frontend, nous avons utilisé Reactjs, redux et Bootstra
 
 Créer un compte avec validation des champs avant l'envoi. Les utilisateurs sont également prévenus si un champs est incorrect ou manquant.
 Se connecter en utilisant ses identifiants secrets.
-Voir tous les membres de Konexio déja enregistrés et les modifier (seulement si le status de l'utilisateur connecté est "teacher".
+Voir tous les membres de Konexio déjà enregistrés et les modifier (seulement si le status de l'utilisateur connecté est "teacher".
 Voir son propre profil, modifier son status et sa photo de profile.
 Voir le staus des membres (uniquement si il s'agit d'un professeur ou de son assitant car cette section contient des informations sensibles.
 Modifier le nom et prénom d'un utilisateur,
