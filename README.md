@@ -8,7 +8,7 @@ Vous pourrez ensuite accéder au dossier frontend et au dossier backend.
 
 ### Lancement du backend
 ###### Dans le dossier backend, lancez le backend avec les commandes:
-node server
+- node server
 
 ### Lancement du frontend
 ###### Dans le dossier frontend, lancez le frontend avec les commandes:
