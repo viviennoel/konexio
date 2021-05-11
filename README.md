@@ -32,7 +32,7 @@ Cela nous a permis de mettre en place une application monopage permettant aux ut
 
 ## BACKEND - NODE
 
-### Les fonctionalités du Backend
+### Les fonctionnalités du Backend
 
 Le backend a été développé en utilisant Node.JS/Express, MongoDB et Mongoose.
 Les routes mises en place permettent de : 
@@ -50,5 +50,5 @@ Les routes mises en place permettent de :
 ## AXES D'AMELIORATION
 - L'utilisation de Traefik et Docker serait une approche intéressante à mettre en place pour le lancement en production de cette application.
 - La mise en place de tests en utilisant Mocha serait également intéressante pour cette application.
-- La modification du status par l'utilisateur lui même me semble risqué, car il change les droits sur la modification des profiles. Une vérification au niveau du Backend avec certains E-mails authorisés pour le poste de professeur serait souhaitable.
+- La modification du status par l'utilisateur lui même me semble risqué, car il change les droits sur la modification des profiles. Une vérification au niveau du Backend avec certains E-mails autorisés pour le poste de professeur serait souhaitable.
 
