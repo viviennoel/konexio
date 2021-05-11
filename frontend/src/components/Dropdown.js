@@ -21,7 +21,7 @@ function Dropdown({ title, items }) {
       >
         <div className="dd-header__title text-center d-flex justify-content-around">
           <h2 className="m-auto header__logo">Konexio</h2>
-          <p className="dd-header__title--bold">{title}</p>
+          <p className="dd-header__title mb-0 m-auto">{title}</p>
         </div>
       </div>
 

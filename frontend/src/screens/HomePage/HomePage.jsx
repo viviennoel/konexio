@@ -20,10 +20,13 @@ class HomePage extends React.Component {
         return (
             <div>
                  <Header></Header>
-            <div className="col-12 col-lg-10 offset-lg-1 text-center">
+            <div className="col-12 text-center">
                 <h1 className="pt-5">Bienvenue {user.firstname}!</h1>
                 <p>Vous rejoignez la grande équipe de Konexio!</p>
-                <h3 className="pb-5 mb-5">Voici tous nos membre enregistrés:</h3>
+                <div className="homepage__banner">
+                    <div className="homepage__banner-image"></div>
+                </div>
+                <h3 className="pb-md-5 pb-0 mb-md-5 mb-2">Voici tous nos membre enregistrés:</h3>
                 {users.loading && <em>Loading users...</em>}
                 {users.error && <span className="text-danger">ERROR: {users.error}</span>}
 

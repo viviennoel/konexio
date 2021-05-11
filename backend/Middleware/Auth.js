@@ -3,7 +3,7 @@
 module.exports = (req, res, next) => {
     console.log('auth');
 
-    //try {
+    try {
         const token = req.headers.authorization.split(' ')[1];
         console.log('token');
         console.log(token);
@@ -19,10 +19,10 @@ module.exports = (req, res, next) => {
         } else {
             next();
         }
-    //}
-    //catch {
-    //    res.status(434).json({
-    //        error: new Error('Invalid request!')
-    //    });
-    //}
+    }
+    catch {
+        res.status(434).json({
+            error: new Error('Invalid request!')
+        });
+    }
 };

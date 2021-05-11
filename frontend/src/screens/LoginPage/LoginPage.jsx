@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-
+import Carousel from '../../components/Carousel';
 import { userActions } from '../../redux/actions';
 
 class LoginPage extends React.Component {
@@ -68,6 +68,35 @@ class LoginPage extends React.Component {
                         </div>
                     </form>
                 </div>
+                <Carousel items={
+              [
+                  {
+                    id: 0,
+                    src : "https://res.cloudinary.com/viviennoel07/image/upload/v1618044251/bg_home_naippt.jpg",
+                    recommandation: "Bienvenue chez Konexio!",
+                    recommendation_website : "https://www.valios.net",
+                    recommendation_society : "Découvrez toutes nos valeurs au sein de nos formations",
+                    action : "En savoir plus",
+                  },
+                  {
+                    id: 1,
+                    src : "https://res.cloudinary.com/viviennoel07/image/upload/v1618044251/bg_home_naippt.jpg",
+                    recommandation: "Nous sommes au service de nos apprenants",
+                    recommendation_website : "content.recommendation_website3",
+                    recommendation_society : "Découvrez toutes nos valeurs au sein de nos formations",
+                    action : "En savoir plus",
+                  },
+                  {
+                    id: 2,
+                    src : "https://res.cloudinary.com/viviennoel07/image/upload/v1617637564/Education_example_u49zgd.jpg",
+                    recommandation: "Un contenu ludique et animé",
+                    recommendation_website : "content.recommendation_website2",
+                    recommendation_society : "content.recommendation_society2",
+                    action : "content.more",
+                  },
+                ]
+              }>
+              </Carousel>
             </div>
         );
     }

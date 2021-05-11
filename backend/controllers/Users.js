@@ -23,9 +23,8 @@ exports.signupUser = (req, res, next) => {
         req.file.filename === null ||
         req.body.cgu === false ||
         req.body.newsletter === null
-        )
-    {
-        return res.status(410).json( req.body.status );
+    ) {
+        return res.status(410).json(req.body.status);
     } else {
         bcrypt.hash(req.body.password, 10)
             .then(hash => {
@@ -34,9 +33,9 @@ exports.signupUser = (req, res, next) => {
                     lastname: req.body.lastname,
                     email: req.body.email,
                     password: hash,
-                    status : req.body.status,
-                    picture : `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-                    newsletter : req.body.newsletter
+                    status: req.body.status,
+                    picture: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+                    newsletter: req.body.newsletter
                 });
 
                 //Let's now save the user in MongoDB
@@ -74,16 +73,19 @@ exports.loginUser = (req, res, next) => {
                     }
 
                     //If the password is correct, we send the firstname, the token and userId as response
-                    res.status(200).json({
-                        userId: user._id,
-                        token: jwt.sign(
-                            { userId: user._id },
-                            'RANDOM_TOKEN_SECRET',
-                            { expiresIn: '24h' }
-                        ),
-                        firstname: user.firstname,
-                        status:user.status
-                    });
+                    User.findOne({ email: req.body.user.email })
+                        .then(user => res.status(200).json({
+                            userId: user._id,
+                            token: jwt.sign(
+                                { userId: user._id },
+                                'RANDOM_TOKEN_SECRET',
+                                { expiresIn: '24h' }
+                            ),
+                            firstname: user.firstname,
+                            status: user.status
+                        })
+                        )
+                        .catch(error => res.status(500).json({ error }))
                 })
                 .catch(error => res.status(500).json({ error }));
         })
@@ -94,35 +96,35 @@ exports.loginUser = (req, res, next) => {
 exports.usersGetAll = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     let userId = jwt.verify(token, 'RANDOM_TOKEN_SECRET')
-    User.findOne({ _id : userId.userId })
+    User.findOne({ _id: userId.userId })
         .then(
-        (response) => {
-            console.log(response);
-            if (!response) {
-                return res.status(405).json({ message: 'user doesnt exist' });
-            } else {
-                //Is the user entitled to display all the members of the team?
-                console.log(response.status);
-                User.find()
-                .then(
-                    (response) => {
-                        console.log(response);
-                        if (!response) {
-                            return res.status(405).json({ message: 'There is no user Konexio!' });
-                        } else {
-                            console.log('Success');
-                            console.log(response);
+            (response) => {
+                console.log(response);
+                if (!response) {
+                    return res.status(405).json({ message: 'user doesnt exist' });
+                } else {
+                    //Is the user entitled to display all the members of the team?
+                    console.log(response.status);
+                    User.find()
+                        .then(
+                            (response) => {
+                                console.log(response);
+                                if (!response) {
+                                    return res.status(405).json({ message: 'There is no user Konexio!' });
+                                } else {
+                                    console.log('Success');
+                                    console.log(response);
 
-                            res.status(200).json(response);
-                        }
-                    })
-                    .catch(
-                        () => {
-                            res.status(500).send(new Error('Database error!'));
-                        }
-                    )
-            }
-        })
+                                    res.status(200).json(response);
+                                }
+                            })
+                        .catch(
+                            () => {
+                                res.status(500).send(new Error('Database error!'));
+                            }
+                        )
+                }
+            })
         .catch(
             () => {
                 res.status(500).send(new Error('Database error!'));
@@ -130,9 +132,9 @@ exports.usersGetAll = (req, res, next) => {
         )
 };
 
-function removeKey(items, key){
+function removeKey(items, key) {
 
-    items.forEach(item=> {
+    items.forEach(item => {
         delete item[key]; // remove the attr eg Password
     });
 
@@ -149,15 +151,15 @@ exports.deleteUser = (req, res, next) => {
 
     User.deleteOne({ _id: o_id })
         .then(
-        (user) => {
-            console.log(user);
-            if (!user) {
-                return res.status(405).json({ message: 'no order saved' });
-            } else {
-                console.log('Success')
-                res.status(200).json(user);
-            }
-        })
+            (user) => {
+                console.log(user);
+                if (!user) {
+                    return res.status(405).json({ message: 'no order saved' });
+                } else {
+                    console.log('Success')
+                    res.status(200).json(user);
+                }
+            })
 
         .catch(
             () => {
@@ -172,7 +174,7 @@ exports.userGet = (req, res, next) => {
     console.log('userGet');
     console.log(req.params.userId);
 
-    User.findOne({ _id : req.params.userId }).then(
+    User.findOne({ _id: req.params.userId }).then(
         (response) => {
             console.log(response);
             if (!response) {
@@ -213,7 +215,7 @@ exports.userUpdate = (req, res, next) => {
                         {
                             ...req.body,
                             password: response.password,
-                                _id: req.params.userId
+                            _id: req.params.userId
                         }
                     ).then((response) => {
                         console.log('user modification done')
