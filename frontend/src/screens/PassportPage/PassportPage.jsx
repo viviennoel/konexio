@@ -2,13 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { userActions } from '../../redux/actions';
-import Header from '../../components/Header'
+import Header from '../../components/Header';
+import Carousel from '../../components/Carousel';
+
 
 class PassportPage extends React.Component {
     constructor(props) {
         super(props);
 
-        //this.fileInput = React.createRef();
         this.state = {
             status: "not selected",
             file: null,
@@ -21,39 +22,32 @@ class PassportPage extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-
+    //Get user information
     componentDidMount() {
         const { user } = this.props;
-        console.log("PASSPORT")
-        console.log(user)
         this.props.getOne(user.userId);
     }
 
+    //Submit form (user modification)
     handleSubmit(event) {
         event.preventDefault();
         const { user, displayed } = this.props;
         let file = this.state.file === null ? displayed.items.picture : this.state.file;
         let status = this.state.status === "not selected" ? displayed.items.status : this.state.status;
 
-        console.log('this is the status of the user')
-        console.log(status)
-        console.log(file)
+        //Create user
+        var newProfile = new FormData();
+        newProfile.append("file", file);
+        newProfile.append("firstname", displayed.items.firstname);
+        newProfile.append("lastname", displayed.items.lastname);
+        newProfile.append("email", displayed.items.email);
+        newProfile.append("password", displayed.items.password);
+        newProfile.append("status", status);
+        newProfile.append("newsletter", displayed.items.newsletter);
+        newProfile.append("cgu", true);
 
-        //Warning & Verifications - More custom than the simple 'required'
-        
-            //Create user
-            var newProfile = new FormData();
-            newProfile.append("file", file);
-            newProfile.append("firstname", displayed.items.firstname);
-            newProfile.append("lastname", displayed.items.lastname);
-            newProfile.append("email", displayed.items.email);
-            newProfile.append("password", displayed.items.password);
-            newProfile.append("status", status);
-            newProfile.append("newsletter", displayed.items.newsletter);
-            newProfile.append("cgu", true);
-
-            //fetch the data to the backend        
-            this.props.updatePicture(newProfile, user.userId);
+        //fetch the data to the backend        
+        this.props.updatePicture(newProfile, user.userId);
 
     }
 
@@ -70,22 +64,22 @@ class PassportPage extends React.Component {
 
     //Picture upload
     handleChangePicture(event) {
-        console.log(event.target.files[0]);
         this.setState({
             file: event.target.files[0],
             fileUrl: URL.createObjectURL(event.target.files[0])
         })
     }
 
+    //Render the user's passport
     render() {
         const { user, users, displayed } = this.props;
         return (
             <div>
                 <Header></Header>
                 <div className="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-                    <h1 className="pt-5 font__Marcelus">Bienvenue {user.firstname}!</h1>
-                    <p>Voici donc le membre que vous recherchez chez Konexio!</p>
-                    <h3>Accès aux informations: {user.status === "teacher" || user.status === "assistant"
+                    <h1 className="pt-5 font__Marcelus text-center">Voici votre passeport!</h1>
+                    <p className="text-center">Voici donc le membre que vous recherchez chez Konexio!</p>
+                    <h3 className="text-center">Accès aux informations: {user.status === "teacher" || user.status === "assistant"
                         ? <b>Authorisé</b> : <b>Seuls les membres de l'équipe pédagogique peuvent accéder à ces informations</b>}
                     </h3>
                     {displayed.changing && <em>Loading users...</em>}
@@ -93,15 +87,16 @@ class PassportPage extends React.Component {
                     {displayed.items ?
 
                         //Thisplay the passport if the user is entitled
-                        <div className="row preview__passport">
-                            <div className="col-6 d-flex flex-wrap text-center p-2">
+                        <div className="row preview__passport mb-5">
+                            <div className="col-sm-6 d-flex flex-wrap text-center p-2">
                                 <div className="m-auto"><img src={displayed.items.picture} title="profile picture" alt="profile picture" className="preview__img m-auto"></img></div>
-                                <h2 className="text-center w-100 pt-5">{displayed.items.firstname} {displayed.items.lastname}</h2>
-                                <p className="preview__text text-center">Ce membre de Konexio est enriegistré avec l'identifiant :</p>
+                                <h2 className="text-center w-100 pt-5 font__Marcelus">{displayed.items.firstname} {displayed.items.lastname}</h2>
+                                <p className="preview__text text-center mb-0">Ce membre de Konexio est enriegistré avec l'identifiant :</p>
                                 <p className="preview__text text-center"><b>{displayed.items._id}</b></p>
+                                <img className="passport__stamps m-auto" src="https://res.cloudinary.com/viviennoel07/image/upload/v1620737978/stamps_yfolva.png" title="stamps" alt="stamps"></img>
                             </div>
-                            <div className="col-6 d-flex flex-wrap text-center p-2 border-start">
-                                <h2 className="text-center w-100 pt-5">{displayed.items.firstname} est : <b>{displayed.items.status}</b></h2>
+                            <div className="col-sm-6 d-flex flex-wrap text-center p-2 border-start">
+                                <h2 className="text-center w-100 pt-5 font__Marcelus">{displayed.items.firstname} est : <b>{displayed.items.status}</b></h2>
                                 <p className="preview__text w-100 text-center">E-mail <b>{displayed.items.email}</b></p>
                                 <p className="preview__text w-100 text-center">{displayed.items.newsletter ?
                                     "Souhaite"
@@ -112,11 +107,11 @@ class PassportPage extends React.Component {
                                 {user.changing ? <em> - Deleting...</em>
                                     : user.changingError ? <span className="text-danger"> - ERROR: {user.deleteError}</span>
                                         : <div className="preview_editor w-100 p-5 text-center">
-                                            <h2 className="pt-5 pb-5">Souhaitez vous modifier le nom de ce membre?</h2>
+                                            <h2 className="pt-5 pb-5 font__Marcelus">Souhaitez vous modifier le nom de ce membre?</h2>
 
                                             <form onSubmit={this.handleSubmit} autoComplete="on">
                                                 {/*Status*/}
-                                                <label className="col-12 mt-3 d-flex flex-wrap">
+                                                <label className="col-12 mt-3 d-flex flex-wrap pt-5 pb-5">
                                                     Votre status :
                                                     {this.state.status === "not selected"
                                                         ? <img className="register__form-icons missing" src="https://res.cloudinary.com/viviennoel07/image/upload/v1620403589/writte_oofiko.png"></img>
@@ -130,7 +125,7 @@ class PassportPage extends React.Component {
                                                 </label>
 
                                                 {/*Photo de profile*/}
-                                                <label className="col-12 mt-3 d-flex flex-wrap">
+                                                <label className="col-12 mt-3 d-flex flex-wrap pb-5">
                                                     Votre photo de profile :
                                                     {this.state.file === null
                                                         ? <img className="register__form-icons missing" src="https://res.cloudinary.com/viviennoel07/image/upload/v1620403589/writte_oofiko.png"></img>
@@ -140,7 +135,7 @@ class PassportPage extends React.Component {
 
                                                 {/*Envoyer le formulaire - Dernière vérification que les champs sont correctement remplis*/}
                                                 <div className="col-12 mt-5 mb-5 text-center">
-                                                    {this.state.status === "" && this.state.file === null 
+                                                    {this.state.status === "" && this.state.file === null
                                                         ? <button className="button__unabled">Envoyer</button>
                                                         : <button className="button__validation" type="submit">Envoyer</button>
                                                     }
@@ -159,6 +154,35 @@ class PassportPage extends React.Component {
                         </div>
                     }
                 </div>
+                <Carousel items={
+                    [
+                        {
+                            id: 0,
+                            src: "https://res.cloudinary.com/viviennoel07/image/upload/v1618044251/bg_home_naippt.jpg",
+                            recommandation: "Bienvenue chez Konexio!",
+                            recommendation_website: "https://www.valios.net",
+                            recommendation_society: "Découvrez toutes nos valeurs au sein de nos formations",
+                            action: "En savoir plus",
+                        },
+                        {
+                            id: 1,
+                            src: "https://res.cloudinary.com/viviennoel07/image/upload/v1618044251/bg_home_naippt.jpg",
+                            recommandation: "Nous sommes au service de nos apprenants",
+                            recommendation_website: "content.recommendation_website3",
+                            recommendation_society: "Découvrez toutes nos valeurs au sein de nos formations",
+                            action: "En savoir plus",
+                        },
+                        {
+                            id: 2,
+                            src: "https://res.cloudinary.com/viviennoel07/image/upload/v1617637564/Education_example_u49zgd.jpg",
+                            recommandation: "Un contenu ludique et animé",
+                            recommendation_website: "content.recommendation_website2",
+                            recommendation_society: "content.recommendation_society2",
+                            action: "content.more",
+                        },
+                    ]
+                }>
+                </Carousel>
             </div>
         );
     }

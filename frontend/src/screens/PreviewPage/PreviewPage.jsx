@@ -49,9 +49,6 @@ class PreviewPage extends React.Component {
         }
 
         //fetch the data to the backend
-        console.log('this is the newuser')
-        console.log(id)
-        console.log(newuser)
         this.props.updateOne(newuser, id);
     }
 
@@ -66,15 +63,16 @@ class PreviewPage extends React.Component {
         });
     }
 
+    //Display the preview
     render() {
         const { user, users, displayed } = this.props;
         return (
             <div>
                 <Header></Header>
-                <div className="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
-                    <h1 className="pt-5 font__Marcelus">Bienvenue {user.firstname}!</h1>
-                    <p>Voici donc le membre que vous recherchez chez Konexio!</p>
-                    <h3>Accès aux informations: {user.status === "teacher" || user.status === "assistant"
+                <div className="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 preview__container">
+                    <h1 className="pt-5 font__Marcelus text-center">Besoin de plus d'information?</h1>
+                    <p className="text-center">Voici donc le membre que vous recherchez chez Konexio!</p>
+                    <h3 className="text-center">Accès aux informations: {user.status === "teacher" || user.status === "assistant"
                         ? <b>Authorisé</b> : <b>Seuls les membres de l'équipe pédagogique peuvent accéder à ces informations</b>}
                     </h3>
                     {displayed.loading && <em>Loading users...</em>}
@@ -82,15 +80,16 @@ class PreviewPage extends React.Component {
                     {displayed.items && (user.status === "teacher" || user.status === "assistant") ?
 
                         //Thisplay the passport if the user is entitled
-                        <div className="row preview__passport">
-                            <div className="col-6 d-flex flex-wrap text-center p-2">
+                        <div className="row preview__passport mb-5">
+                            <div className="col-md-6 d-flex flex-wrap text-center p-2">
                                 <div className="m-auto"><img src={displayed.items.picture} title="profile picture" alt="profile picture" className="preview__img m-auto"></img></div>
-                                <h2 className="text-center w-100 pt-5">{displayed.items.firstname} {displayed.items.lastname}</h2>
+                                <h2 className="text-center w-100 pt-5 font__Marcelus">{displayed.items.firstname} {displayed.items.lastname}</h2>
                                 <p className="preview__text text-center">Ce membre de Konexio est enriegistré avec l'identifiant :</p>
                                 <p className="preview__text text-center"><b>{displayed.items._id}</b></p>
+                                <img className="passport__stamps m-auto" src="https://res.cloudinary.com/viviennoel07/image/upload/v1620737978/stamps_yfolva.png" title="stamps" alt="stamps"></img>
                             </div>
-                            <div className="col-6 d-flex flex-wrap text-center p-2 border-start">
-                                <h2 className="text-center w-100 pt-5">{displayed.items.firstname} est : <b>{displayed.items.status}</b></h2>
+                            <div className="col-md-6 d-flex flex-wrap text-center p-2 border-start">
+                                <h2 className="text-center w-100 pt-5 font__Marcelus">{displayed.items.firstname} est : <b>{displayed.items.status}</b></h2>
                                 <p className="preview__text w-100 text-center">E-mail <b>{displayed.items.email}</b></p>
                                 <p className="preview__text w-100 text-center">{displayed.items.newsletter ?
                                     "Souhaite"
@@ -101,11 +100,11 @@ class PreviewPage extends React.Component {
                                 {user.changing ? <em> - Deleting...</em>
                                     : user.changingError ? <span className="text-danger"> - ERROR: {user.deleteError}</span>
                                         : <div className="preview_editor w-100 p-5 text-center">
-                                            <h2 className="pt-5 pb-5">Souhaitez vous modifier le nom de ce membre?</h2>
+                                            <h2 className="pt-5 pb-5 font__Marcelus">Souhaitez vous modifier le nom de ce membre?</h2>
 
                                             <form onSubmit={this.handleSubmit} autoComplete="on">
                                                 {/*Firstname*/}
-                                                <label className="col-12 mt-3 d-flex flex-wrap">
+                                                <label className="col-12 mt-3 d-flex flex-wrap pt-5 pb-5">
                                                     Prénom :
                                                 {this.state.firstname === ""
                                                         ? <img className="register__form-icons missing" id="missing" src="https://res.cloudinary.com/viviennoel07/image/upload/v1620403589/writte_oofiko.png"></img>
@@ -114,7 +113,7 @@ class PreviewPage extends React.Component {
                                                 </label>
 
                                                 {/*Familyname*/}
-                                                <label className="col-12 mt-3  d-flex flex-wrap">
+                                                <label className="col-12 mt-3  d-flex flex-wrap pb-5">
                                                     Nom :
                                                 {this.state.lastname === ""
                                                         ? <img className="register__form-icons missing" src="https://res.cloudinary.com/viviennoel07/image/upload/v1620403589/writte_oofiko.png"></img>

@@ -37,6 +37,7 @@ function login(username, password) {
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 }
 
+//logout the user
 function logout() {
     userService.logout();
     return { type: userConstants.LOGOUT };
@@ -49,16 +50,18 @@ function register(user) {
 
         userService.register(user)
             .then(
-                user => { 
-                    dispatch(success());
+                response => { 
+                    dispatch(success(response));
                     history.push('/login');
-                    dispatch(alertActions.success('Registration successful'));
+                    dispatch(alertActions.success('Registration successfully done'));
                 },
                 error => {
                     dispatch(failure(error.toString()));
                     dispatch(alertActions.error(error.toString()));
                 }
-            );
+            ).catch(function (error) {
+                alert(' error ' + error)
+            });
     };
 
     function request(user) { return { type: userConstants.REGISTER_REQUEST, user } }
@@ -94,7 +97,6 @@ function _delete(id) {
             .then(
                 user => {
                     dispatch(success(id))
-
                 },
                 error => dispatch(failure(id, error.toString()))
             );
@@ -130,7 +132,6 @@ function update(user, id) {
         userService.update(user, id)
             .then(
                 displayed => { 
-                    console.log(displayed);
                     dispatch(success(user));
                     dispatch(alertActions.success("User have been modified successfully"));
                 },
@@ -154,8 +155,6 @@ function updatePicture(user, id) {
         userService.updatePicture(user, id)
             .then(
                 displayed => { 
-                    console.log('this is what is returned JJJJJJJJJJ')
-                    console.log(displayed);
                     dispatch(success(displayed));
                     dispatch(alertActions.success("User picture have been modified successfully"));
                 },

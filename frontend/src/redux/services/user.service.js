@@ -20,10 +20,8 @@ function register(formData) {
     };
 
     return fetch(`${config.apiUrl}/api/users`, requestOptions)
-        .then(handleResponse)
-        .catch(function (error) {
-            alert('TOKEN ERROR ' + error.message)
-        });
+        .then(response => response.json())
+        .then(handleResponse) 
 }
 
 //Login the user to his account
@@ -39,11 +37,11 @@ function login(email, password) {
     };
 
     return fetch(`${config.apiUrl}/api/users/login`, requestOptions)
+        .then(response => response.json())
         .then(handleResponse)
         .then(user => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('user', JSON.stringify(user));
-
             return user;
         });
 }
@@ -62,9 +60,10 @@ function getAll() {
     };
 
     return fetch(`${config.apiUrl}/api/users/usersGetAll`, requestOptions)
+        .then(response => response.json())
         .then(handleResponse)
         .catch(function (error) {
-            console.log('GET ' + error.message)
+            alert('GET ' + error.message)
         })
 }
 
@@ -76,6 +75,7 @@ function _delete(id) {
     };
 
     return fetch(`${config.apiUrl}/api/users/deleteUser/${id}`, requestOptions)
+        .then(response => response.json())
         .then(handleResponse);
 }
 
@@ -87,17 +87,16 @@ function getById(id) {
     };
 
     return fetch(`${config.apiUrl}/api/users/userGet/${id}`, requestOptions)
+        .then(response => response.json())
         .then(handleResponse)
         .catch(function (error) {
-            console.log('GET ' + error.message)
+            alert('GET ' + error.message)
         })
 }
 
 //Update one user
 function update(user, id) {
     let authUser = JSON.parse(localStorage.getItem('user'));
-    console.log("which user update")
-    console.log(user)
     const requestOptions = {
         method: 'PUT',
         headers: { 'Content-Type': "application/json", 'Authorization': 'bearer ' + authUser.token }, 
@@ -105,9 +104,10 @@ function update(user, id) {
     };
 
     return fetch(`${config.apiUrl}/api/users/userUpdate/${id}`, requestOptions)
+        .then(response => response.json())
         .then(handleResponse)
         .catch(function (error) {
-            console.log('TOKEN ERROR ' + error.message)
+            alert(' error ' + error.message)
         })
 }
 
@@ -120,33 +120,24 @@ function updatePicture(user, id) {
     };
 
     return fetch(`${config.apiUrl}/api/users/userUpdatePicture/${id}`, requestOptions)
+        .then(response => response.json())
         .then(handleResponse)
         .catch(function (error) {
             alert('TOKEN ERROR ' + error.message)
         });
 }
 
-
-
-
-
-
-
-
 function handleResponse(response) {
-    return response.text().then(text => {
-        const data = text && JSON.parse(text);
-        if (!response.ok) {
-            if (response.status === 401) {
-                // auto logout if 401 response returned from api
-                logout();
-                location.replace("/");
-            }
-
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
+    if(response.error) {
+        if (response.status === 401) {
+            // auto logout if 401 response returned from api
+            logout();
+            location.replace("/");
         }
 
-        return data;
-    });
+        const error = response.error;
+        return Promise.reject(error);
+    }
+
+    return response;
 }

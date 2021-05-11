@@ -48,8 +48,6 @@ export function displayed(state = {}, action) {
             // remove 'deleting:true' property and add 'deleteError:[error]' property to user 
             return { user, changingError: action.error }
 
-
-
         default:
             return state
     }

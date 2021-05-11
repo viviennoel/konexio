@@ -18,9 +18,9 @@ class Header extends Component {
               <Link to="/login" className="m-auto header__text">Déconnection</Link>
             </div>)
             :
-            (<Dropdown title={
-              <img src='https://res.cloudinary.com/viviennoel07/image/upload/v1620499973/trash_gc9se1.png' id="button_drop" className="menu_icon m-auto" alt="website" />
-          } items={
+            (<Dropdown 
+              title={ <img src='https://res.cloudinary.com/viviennoel07/image/upload/v1620734628/menu_rlw3oe.png' id="button_drop" className="menu_icon m-auto" alt="website" /> } 
+              items={
               [
                   {
                     id: 1,
@@ -35,7 +35,8 @@ class Header extends Component {
                     value: <Link to="/passport" id="Web">Mon passport</Link>,
                   }
                 ]
-          } />)
+              } ></Dropdown>
+            )
           }
         </div>
       </div>

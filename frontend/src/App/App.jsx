@@ -1,7 +1,6 @@
 import React from 'react';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-
 import { history } from '../helpers';
 import { alertActions } from '../redux/actions';
 import { PrivateRoute } from '../components';
@@ -11,6 +10,7 @@ import { PreviewPage } from '../screens/PreviewPage';
 import { RegisterPage } from '../screens/RegisterPage';
 import { PassportPage } from '../screens/PassportPage';
 import Footer from '../components/Footer'
+import ScrollToTop from '../components/ScrollToTop';
 
 class App extends React.Component {
     constructor(props) {
@@ -25,28 +25,29 @@ class App extends React.Component {
     render() {
         const { alert } = this.props;
         return (
-        <div>
-            <div className="jumbotron">
-                <div className="container p-0">
-                    <div>
-                        {alert.message &&
-                            <div className={`alert ${alert.type}`}>{alert.message}</div>
-                        }
-                        <Router history={history}>
-                            <Switch>
-                                <PrivateRoute exact path="/" component={HomePage} />
-                                <PrivateRoute exact path="/preview" component={PreviewPage} />
-                                <PrivateRoute exact path="/passport" component={PassportPage} />
-                                <Route path="/login" component={LoginPage} />
-                                <Route path="/register" component={RegisterPage} />
-                                <Redirect from="*" to="/" />
-                            </Switch>
-                        </Router>
+            <div>
+                <div className="jumbotron">
+                    <div className="container p-0">
+                        <div>
+                            {alert.message &&
+                                <div className={`alert ${alert.type}`}>{alert.message}</div>
+                            }
+                            <Router history={history}>
+                            <ScrollToTop />
+                                    <Switch>
+                                        <PrivateRoute exact path="/" component={HomePage} />
+                                        <PrivateRoute exact path="/users" component={PreviewPage} />
+                                        <PrivateRoute exact path="/passport" component={PassportPage} />
+                                        <Route path="/login" component={LoginPage} />
+                                        <Route path="/register" component={RegisterPage} />
+                                        <Redirect from="*" to="/" />
+                                    </Switch>
+                            </Router>
+                        </div>
                     </div>
                 </div>
+                <Footer></Footer>
             </div>
-            <Footer></Footer>
-        </div>
         );
     }
 }

@@ -6,27 +6,29 @@ import { userActions } from '../../redux/actions'
 
 class HomePage extends React.Component {
 
+    //Get all users
     componentDidMount() {
         this.props.getUsers();
     }
 
+    //Handle deletion
     handleDeleteUser(id) {
-        const { user, users } = this.props;
         return (e) => this.props.deleteUser(id);
     }
 
+    //Display the homepage
     render() {
         const { user, users } = this.props;
         return (
             <div>
                  <Header></Header>
-            <div className="col-12 text-center">
-                <h1 className="pt-5">Bienvenue {user.firstname}!</h1>
-                <p>Vous rejoignez la grande équipe de Konexio!</p>
+            <div className="col-12 text-center homepage__container">
+                <h1 className="pt-5 font__Marcelus homepage__welcome">Bienvenue sur votre espace personnel!</h1>
+                <p className="homepage__welcome-subtitle">Vous rejoignez la grande équipe de Konexio!</p>
                 <div className="homepage__banner">
                     <div className="homepage__banner-image"></div>
                 </div>
-                <h3 className="pb-md-5 pb-0 mb-md-5 mb-2">Voici tous nos membre enregistrés:</h3>
+                <h3 className="pb-md-5 pb-0 mb-md-5 mb-2 homepage__banner-subtitle">Voici tous nos membre enregistrés:</h3>
                 {users.loading && <em>Loading users...</em>}
                 {users.error && <span className="text-danger">ERROR: {users.error}</span>}
 
@@ -37,7 +39,7 @@ class HomePage extends React.Component {
                             {users.items.map((user, index) =>
                                 <div key={index} className="col-6 col-md-4 m-auto mb-5 homepage__profile">
                                     {/*This is for the picture*/}
-                                    <Link to={"/preview?id=" + user._id}>
+                                    <Link to={"/users?id=" + user._id}>
                                         <div className="m-auto"><img src={user.picture} title="profile picture" alt="profile picture" className="homepage__profile-image m-auto"></img></div>
                                     </Link>
                                     {/*And this for the label*/}
@@ -54,8 +56,6 @@ class HomePage extends React.Component {
                         </div>
                     </div>
                 }
-                <p>
-                </p>
             </div>
             </div>
         );

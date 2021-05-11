@@ -30,9 +30,6 @@ export function users(state = {}, action) {
       };
     case userConstants.DELETE_SUCCESS:
       // remove deleted user from state
-      console.log('removing from state')
-      console.log(state.items)
-      console.log(action.id)
       return {
         items: state.items.filter(user => user._id !== action.id)
       };
