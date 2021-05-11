@@ -2,15 +2,10 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/Users.js');
 const ObjectId = require('mongodb').ObjectId;
-//This will be used if we wish to send an Email to the user (verifying the account or retrieving the password)
-const nodemailer = require('nodemailer');
 
 //Signing up an user (creating his profile)
 exports.signupUser = (req, res, next) => {
-    console.log(req.body);
     const obj = JSON.parse(JSON.stringify(req.body));
-    console.log(obj);
-    console.log(req.file.filename);
 
     //verify the informations
     if (!req.body.firstname ||
@@ -24,8 +19,9 @@ exports.signupUser = (req, res, next) => {
         req.body.cgu === false ||
         req.body.newsletter === null
     ) {
-        return res.status(410).json(req.body.status);
+        return res.status(410).json({error:"There is an error in the form"});
     } else {
+        //Encrypt the password
         bcrypt.hash(req.body.password, 10)
             .then(hash => {
                 const user = new User({
@@ -38,7 +34,7 @@ exports.signupUser = (req, res, next) => {
                     newsletter: req.body.newsletter
                 });
 
-                //Let's now save the user in MongoDB
+                //Save the user in MongoDB
                 user.save()
                     .then(() => res.status(201).json({
                         userId: user._id,
@@ -48,7 +44,10 @@ exports.signupUser = (req, res, next) => {
                             { expiresIn: '24h' }
                         )
                     }))
-                    .catch(error => res.status(400).json({ error }));
+                    .catch(error => 
+                        {
+                            res.status(400).json({ error:"This Email is taken already" })
+                        });
             })
             .catch(error => res.status(510).json({ error }));
     }
@@ -56,25 +55,21 @@ exports.signupUser = (req, res, next) => {
 
 //Login user function
 exports.loginUser = (req, res, next) => {
-    console.log('loggin in')
-    console.log(req.body)
     User.findOne({ email: req.body.user.email }).select('password')
         .then(user => {
-            console.log(user)
             if (!user) {
-                return res.status(401).json({ error: 'Utilisateur non trouvé !' });
+                return res.status(401).json({ error: "Utilisateur non trouvé !" });
             }
             bcrypt.compare(req.body.user.password, user.password)
                 .then(valid => {
                     if (!valid) {
-                        console.log(req.body.user.password)
-                        console.log(user.password)
-                        return res.status(401).json({ error: 'Mot de passe incorrect !' });
+                        return res.status(401).json({ error: "Mot de passe incorrect !" });
                     }
 
                     //If the password is correct, we send the firstname, the token and userId as response
                     User.findOne({ email: req.body.user.email })
-                        .then(user => res.status(200).json({
+                        .then(user => {
+                            res.status(200).json({
                             userId: user._id,
                             token: jwt.sign(
                                 { userId: user._id },
@@ -83,8 +78,8 @@ exports.loginUser = (req, res, next) => {
                             ),
                             firstname: user.firstname,
                             status: user.status
+                            })
                         })
-                        )
                         .catch(error => res.status(500).json({ error }))
                 })
                 .catch(error => res.status(500).json({ error }));
@@ -96,25 +91,22 @@ exports.loginUser = (req, res, next) => {
 exports.usersGetAll = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     let userId = jwt.verify(token, 'RANDOM_TOKEN_SECRET')
+
+    //Check if the user is entitled - Not needed for us as everyone can see but good practice
     User.findOne({ _id: userId.userId })
         .then(
             (response) => {
-                console.log(response);
                 if (!response) {
                     return res.status(405).json({ message: 'user doesnt exist' });
                 } else {
-                    //Is the user entitled to display all the members of the team?
-                    console.log(response.status);
+
+                    //Is the user entitled to display all the members of the team? - if yes...
                     User.find()
                         .then(
                             (response) => {
-                                console.log(response);
                                 if (!response) {
                                     return res.status(405).json({ message: 'There is no user Konexio!' });
                                 } else {
-                                    console.log('Success');
-                                    console.log(response);
-
                                     res.status(200).json(response);
                                 }
                             })
@@ -132,35 +124,19 @@ exports.usersGetAll = (req, res, next) => {
         )
 };
 
-function removeKey(items, key) {
-
-    items.forEach(item => {
-        delete item[key]; // remove the attr eg Password
-    });
-
-    return items;
-}
-
-
 //DELETE AN USER
 exports.deleteUser = (req, res, next) => {
-    console.log(req.params.ProductId);
     let o_id = new ObjectId(req.params.ProductId);
-    console.log(o_id);
-    console.log('deletion of an item');
 
     User.deleteOne({ _id: o_id })
         .then(
             (user) => {
-                console.log(user);
                 if (!user) {
                     return res.status(405).json({ message: 'no order saved' });
                 } else {
-                    console.log('Success')
                     res.status(200).json(user);
                 }
             })
-
         .catch(
             () => {
                 res.status(500).send(new Error('Database error!'));
@@ -170,17 +146,12 @@ exports.deleteUser = (req, res, next) => {
 
 //GET USER
 exports.userGet = (req, res, next) => {
-    console.log('Before');
-    console.log('userGet');
-    console.log(req.params.userId);
 
     User.findOne({ _id: req.params.userId }).then(
         (response) => {
-            console.log(response);
             if (!response) {
                 return res.status(405).json({ message: 'user doesnt exist' });
             } else {
-                console.log('Success')
                 res.status(200).json(response);
             }
         })
@@ -193,23 +164,18 @@ exports.userGet = (req, res, next) => {
 
 //UPDATE PROFILE
 exports.userUpdate = (req, res, next) => {
-    console.log('req.body')
-    console.log(req.body);
     const token = req.headers.authorization.split(' ')[1];
     let userId = jwt.verify(token, 'RANDOM_TOKEN_SECRET')
 
-    console.log('user modification ahead')
-    //We find the user we wish to modify in order to user the database
+    //Find the user we wish to modify in order to user the database
     User.findOne({ _id: userId.userId }).select('password')
         .then(
             (response) => {
-                console.log(response);
                 if (!response) {
                     return res.status(405).json({ message: 'user doesnt exist' });
                 } else {
-                    console.log('user modification current')
-                    console.log(req.body)
-                    console.log(response.password)
+
+                    //Update user
                     User.updateOne(
                         { _id: req.params.userId },
                         {
@@ -218,8 +184,6 @@ exports.userUpdate = (req, res, next) => {
                             _id: req.params.userId
                         }
                     ).then((response) => {
-                        console.log('user modification done')
-                        console.log(response)
                         res.status(200).json(response)
                     })
                         .catch(error => res.status(400).json({ error }));
@@ -236,14 +200,14 @@ exports.userUpdate = (req, res, next) => {
 exports.userUpdatePicture = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     let userId = jwt.verify(token, 'RANDOM_TOKEN_SECRET')
+
+    //Find user to be updated
     User.findOne({ _id: userId.userId }).select('password')
         .then(
             (response) => {
-                console.log(response);
                 if (!response) {
                     return res.status(405).json({ message: 'user doesnt exist' });
                 } else {
-                    //Make sure the file will not get erased
                     let file = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : req.body.file;
 
                     //build the response for redux
@@ -270,8 +234,6 @@ exports.userUpdatePicture = (req, res, next) => {
                             _id: req.params.userId
                         }
                     ).then(() => {
-                        console.log("This is the response I send")
-                        console.log(toState)
                         res.status(200).json(toState)
                     })
                         .catch(error => res.status(400).json({ error }));
