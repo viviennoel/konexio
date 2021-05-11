@@ -122,6 +122,11 @@ function updatePicture(user, id) {
     return fetch(`${config.apiUrl}/api/users/userUpdatePicture/${id}`, requestOptions)
         .then(response => response.json())
         .then(handleResponse)
+        .then(user => {
+            // store user details and jwt token in local storage to keep user logged in between page refreshes
+            localStorage.setItem('user', JSON.stringify(user));
+            return user;
+        })
         .catch(function (error) {
             alert('TOKEN ERROR ' + error.message)
         });

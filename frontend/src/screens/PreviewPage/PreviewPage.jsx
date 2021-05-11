@@ -136,7 +136,7 @@ class PreviewPage extends React.Component {
 
                         //Display an error message if the user is not entitled
                         : <div className="row">
-                            <div className="col-6 d-flex flex-wrap">
+                            <div className="col-12 text-center">
                                 <p>Vous n'êtes pas authorisé à accéder à ces informations</p>
                             </div>
                         </div>
